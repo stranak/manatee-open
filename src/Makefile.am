@@ -33,7 +33,7 @@ $(top_builddir)/hat-trie/src/libhat-trie.la.new: $(top_builddir)/hat-trie/src/li
 
 AM_CPPFLAGS += -I$(top_srcdir)/corp -I$(top_srcdir)/query -I$(top_srcdir)/concord -I$(top_srcdir)/hat-trie -I$(top_srcdir)/finlib
 
-LDADD = $(REGEX_LDFLAG) libbuiltinmanatee.la
+LDADD = $(REGEX_LDFLAG) libbuiltinmanatee.la $(ICONV_LIBS)
 
 manateesrv_LDADD = $(LDADD) $(PTHREAD_LIBS)
 manateesrv_LDFLAGS = $(LDFLAGS) 

@@ -3,6 +3,7 @@
 #include "fromtof.hh"
 #include <cstdlib>
 #include <fcntl.h>
+#include <unistd.h>
 #include "concord.hh"
 
 using namespace std;
@@ -391,7 +392,11 @@ void Concordance::save (FILE *f, const char *filename, bool save_linegroup,
         fseek (f, 14, SEEK_SET);
         write_header (f, added_align, finished(), full_size, curr_used);
     }
+#if defined DARWIN
+    fsync (fileno (f));
+#else
     fdatasync (fileno (f));
+#endif
     fclose (f);
     if (partial)
         unlock();

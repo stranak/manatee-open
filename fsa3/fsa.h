@@ -1,3 +1,5 @@
+#include <sys/types.h>
+
 typedef const unsigned char *arc_pointer;
 
 typedef struct {

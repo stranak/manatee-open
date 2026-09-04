@@ -11,7 +11,39 @@
 #include <memory>
 
 #if defined DARWIN
-#include <libiberty.h>
+#include <cctype>
+#include <cstring>
+// glibc extension, unavailable in Darwin's libc
+static inline int strverscmp(const char *s1, const char *s2)
+{
+    const unsigned char *p1 = (const unsigned char *) s1;
+    const unsigned char *p2 = (const unsigned char *) s2;
+    while (*p1 && *p2) {
+        if (isdigit(*p1) && isdigit(*p2)) {
+            const unsigned char *b1 = p1, *b2 = p2;
+            while (*p1 == '0') p1++;
+            while (*p2 == '0') p2++;
+            const unsigned char *d1 = p1, *d2 = p2;
+            while (isdigit(*p1)) p1++;
+            while (isdigit(*p2)) p2++;
+            size_t len1 = p1 - d1, len2 = p2 - d2;
+            if (len1 != len2)
+                return len1 < len2 ? -1 : 1;
+            int cmp = memcmp(d1, d2, len1);
+            if (cmp)
+                return cmp;
+            size_t lead1 = d1 - b1, lead2 = d2 - b2;
+            if (lead1 != lead2)
+                return lead1 > lead2 ? -1 : 1;
+            continue;
+        }
+        if (*p1 != *p2)
+            return (int) *p1 - (int) *p2;
+        p1++;
+        p2++;
+    }
+    return (int) *p1 - (int) *p2;
+}
 #endif
 
 template <class Revidx>

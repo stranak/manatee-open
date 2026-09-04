@@ -70,12 +70,15 @@ AC_FUNC_MMAP
 AC_CHECK_FUNCS([memmove setlocale strchr strdup strerror strpbrk])
 AC_REPLACE_FUNCS([getopt])
 
+ICONV_LIBS=
 case $host_os in
     *mingw* )  AM_CONDITIONAL(ADDPCREPOSIX, true) ;;
     *darwin* ) AM_CONDITIONAL(ADDPCREPOSIX, false)
-               AC_DEFINE([DARWIN], [1], [MacOS/DARWIN system]) ;;
+               AC_DEFINE([DARWIN], [1], [MacOS/DARWIN system])
+               ICONV_LIBS=-liconv ;;
     * )        AM_CONDITIONAL(ADDPCREPOSIX, false) ;;
 esac
+AC_SUBST(ICONV_LIBS)
 
 # Swig
 AX_PKG_SWIG([3.0], [], [ AC_MSG_ERROR([SWIG is required to build.]) ])

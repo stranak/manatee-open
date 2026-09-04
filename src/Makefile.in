@@ -490,6 +490,7 @@ FGREP = @FGREP@
 FILECMD = @FILECMD@
 GREP = @GREP@
 HAVE_CXX11 = @HAVE_CXX11@
+ICONV_LIBS = @ICONV_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -643,7 +644,7 @@ libbuiltinmanatee_la_LIBADD = $(top_builddir)/concord/libconcord.la \
 	$(top_builddir)/query/libquery.la $(top_builddir)/corp/libcorp.la $(top_builddir)/finlib/libfin.la $(top_builddir)/fsa3/libfsa3.la $(top_builddir)/hat-trie/src/libhat-trie.la
 
 EXTRA_libbuiltinmanatee_la_DEPENDENCIES = $(top_builddir)/hat-trie/src/libhat-trie.la.new
-LDADD = $(REGEX_LDFLAG) libbuiltinmanatee.la
+LDADD = $(REGEX_LDFLAG) libbuiltinmanatee.la $(ICONV_LIBS)
 manateesrv_LDADD = $(LDADD) $(PTHREAD_LIBS)
 manateesrv_LDFLAGS = $(LDFLAGS) 
 tstcqpgr_LDADD = $(top_builddir)/query/libquery.la $(top_builddir)/corp/libcorp.la \
