@@ -2024,7 +2024,14 @@ CorpInfo *loadCorpInfo (const std::string &corp_name_or_path, bool no_defaults) 
 
     int ret = yyparse();
     if (ret != 0) {
-        delete result;
+        // Do not `delete result` here: bison's %destructor for <ci>-typed
+        // semantic values already frees any CorpInfo objects left on the
+        // parser stack during error unwinding. If the syntax error occurs
+        // while inside a nested ATTRIBUTE/STRUCTURE/PROCESS block, `result`
+        // (reassigned to that nested child by the outerBlock action) points
+        // into a subtree that gets recursively freed when the ancestor
+        // outerBlock value is destroyed - deleting it again here is a
+        // use-after-free/double-free.
         throw runtime_error(corpConfErrMsg);
     }
 
