@@ -125,7 +125,7 @@ void Concordance::delete_linegroups (const char *grps, bool invert)
     allocated = newsize;
     riold = rng;
     rng = newrng;
-    delete riold;
+    free (riold);
     delete linegroup;
     linegroup = newlineg;
 }
